@@ -1,15 +1,15 @@
 #!/bin/bash
 
-#######################################################################
-# Setup base image
-#######################################################################
+########################################################################
+## Setup base image
+########################################################################
 
 sudo apt install locales
 sudo locale-gen en_US.UTF-8
 sudo dpkg-reconfigure locales
 
 
-# Setup environment variables
+## Setup environment variables
 export CONTAINER_TAG=unknown
 export DEBIAN_FRONTEND=noninteractive
 export TZ=Pacific/Honolulu
@@ -20,9 +20,13 @@ export PDK_ROOT=/foss/pdks
 export DESIGNS=/foss/designs
 export EXAMPLES=/foss/examples
 
+sudo mkdir /foss
+sudo mkdir /foss/tools
+sudo mkdir /foss/pdks
+sudo mkdir /foss/examples
 
 ## Assuming scripts are executable and have shebang (`#!/bin/bash`) at the top
-# Execute scripts
+## Execute scripts
 sudo chmod +x ./images/base/scripts/00_base_install.sh
 ./images/base/scripts/00_base_install.sh
 
@@ -41,27 +45,28 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 ######################################################################
 #Add base packages (install via pip, npm, or gem)
 ######################################################################
-# FROM base as basepkg
-# COPY images/base/scripts/install.sh install.sh
-# RUN bash install.sh
+
+sudo chmod +x images/base/scripts/install.sh
+./images/base/scripts/install.sh
 
 ######################################################################
 # Compile magic (part of OpenLane)
 ######################################################################
-# FROM basepkg as magic
-# ARG MAGIC_REPO_URL="https://github.com/rtimothyedwards/magic"
-# ARG MAGIC_REPO_COMMIT="0afe4d87d4aacfbbb2659129a1858a22d216a920"
-# ARG MAGIC_NAME="magic"
-# COPY images/magic/scripts/install.sh install.sh
-# RUN bash install.sh
+
+export MAGIC_REPO_URL="https://github.com/rtimothyedwards/magic"
+export MAGIC_REPO_COMMIT="0afe4d87d4aacfbbb2659129a1858a22d216a920"
+export MAGIC_NAME="magic"
+sudo chmod +x images/magic/scripts/install.sh
+./images/magic/scripts/install.sh
+
 
 ######################################################################
 # Compile openvaf
 ######################################################################
 # FROM basepkg as openvaf
-# ARG OPENVAF_REPO_URL="https://github.com/iic-jku/OpenVAF.git"
-# ARG OPENVAF_REPO_COMMIT="a9697ae7780518f021f9f64e819b3a57033bd39f"
-# ARG OPENVAF_NAME="openvaf"
+# export OPENVAF_REPO_URL="https://github.com/iic-jku/OpenVAF.git"
+# export OPENVAF_REPO_COMMIT="a9697ae7780518f021f9f64e819b3a57033bd39f"
+# export OPENVAF_NAME="openvaf"
 # ENV OPENVAF_NAME=${OPENVAF_NAME}
 # COPY images/openvaf/scripts/install.sh install.sh
 # RUN bash install.sh
@@ -70,9 +75,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile osic-multitool
 ######################################################################
 # FROM openvaf as osic-multitool
-# ARG OSIC_MULTITOOL_REPO_URL="https://github.com/iic-jku/osic-multitool.git"
-# ARG OSIC_MULTITOOL_REPO_COMMIT="512f0967c7bc74483e9c84f5756f53b326b74b32"
-# ARG OSIC_MULTITOOL_NAME="osic-multitool"
+# export OSIC_MULTITOOL_REPO_URL="https://github.com/iic-jku/osic-multitool.git"
+# export OSIC_MULTITOOL_REPO_COMMIT="512f0967c7bc74483e9c84f5756f53b326b74b32"
+# export OSIC_MULTITOOL_NAME="osic-multitool"
 # COPY images/osic-multitool/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -80,9 +85,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Create open_pdks (part of OpenLane)
 ######################################################################
 # FROM osic-multitool as open_pdks
-# ARG OPEN_PDKS_REPO_URL="https://github.com/RTimothyEdwards/open_pdks"
-# ARG OPEN_PDKS_REPO_COMMIT="cd1748bb197f9b7af62a54507de6624e30363943"
-# ARG OPEN_PDKS_NAME="open_pdks"
+# export OPEN_PDKS_REPO_URL="https://github.com/RTimothyEdwards/open_pdks"
+# export OPEN_PDKS_REPO_COMMIT="cd1748bb197f9b7af62a54507de6624e30363943"
+# export OPEN_PDKS_NAME="open_pdks"
 # COPY images/open_pdks/scripts/install_volare.sh install_volare.sh
 # RUN bash install_volare.sh
 # COPY images/open_pdks/scripts/install_ihp.sh install_ihp.sh
@@ -92,9 +97,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile covered 
 ######################################################################
 # FROM base as covered
-# ARG COVERED_REPO_URL="https://github.com/hpretl/verilog-covered"
-# ARG COVERED_REPO_COMMIT="19d30fc942642b14dc24e95331cd4777c8dcbad9"
-# ARG COVERED_NAME="covered"
+# export COVERED_REPO_URL="https://github.com/hpretl/verilog-covered"
+# export COVERED_REPO_COMMIT="19d30fc942642b14dc24e95331cd4777c8dcbad9"
+# export COVERED_NAME="covered"
 # COPY images/covered/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -102,9 +107,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile cvc_rv
 ######################################################################
 # FROM base as cvc_rv
-# ARG CVC_RV_REPO_URL="https://github.com/d-m-bailey/cvc"
-# ARG CVC_RV_REPO_COMMIT="v1.1.5"
-# ARG CVC_RV_NAME="cvc_rv"
+# export CVC_RV_REPO_URL="https://github.com/d-m-bailey/cvc"
+# export CVC_RV_REPO_COMMIT="v1.1.5"
+# export CVC_RV_NAME="cvc_rv"
 # COPY images/cvc_rv/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -113,9 +118,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 ######################################################################
 # FIXME build dependencies clean as stand-alone stages
 # FROM base as fault
-# ARG FAULT_REPO_URL="https://github.com/Cloud-V/Fault"
-# ARG FAULT_REPO_COMMIT="90b1192f7823fb99f3094bf3848b9e2e26a5181f"
-# ARG FAULT_NAME="fault"
+# export FAULT_REPO_URL="https://github.com/Cloud-V/Fault"
+# export FAULT_REPO_COMMIT="90b1192f7823fb99f3094bf3848b9e2e26a5181f"
+# export FAULT_NAME="fault"
 # COPY images/fault/scripts/dependencies.sh dependencies.sh
 # RUN bash dependencies.sh
 # COPY images/fault/scripts/install.sh install.sh
@@ -125,9 +130,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile gaw3-xschem
 ######################################################################
 # FROM base as gaw3-xschem
-# ARG GAW3_XSCHEM_REPO_URL="https://github.com/StefanSchippers/xschem-gaw.git"
-# ARG GAW3_XSCHEM_REPO_COMMIT="640c672e1ad768b92eb6a15943459a1d2214e1dc"
-# ARG GAW3_XSCHEM_NAME="gaw3-xschem"
+# export GAW3_XSCHEM_REPO_URL="https://github.com/StefanSchippers/xschem-gaw.git"
+# export GAW3_XSCHEM_REPO_COMMIT="640c672e1ad768b92eb6a15943459a1d2214e1dc"
+# export GAW3_XSCHEM_NAME="gaw3-xschem"
 # COPY images/gaw3-xschem/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -135,9 +140,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile GDS3D
 ######################################################################
 # FROM open_pdks as gds3d
-# ARG GDS3D_REPO_URL="https://github.com/trilomix/GDS3D.git"
-# ARG GDS3D_REPO_COMMIT="173da0cc2f3804984b7e77862fbb0c3f4e308a4b"
-# ARG GDS3D_NAME="gds3d"
+# export GDS3D_REPO_URL="https://github.com/trilomix/GDS3D.git"
+# export GDS3D_REPO_COMMIT="173da0cc2f3804984b7e77862fbb0c3f4e308a4b"
+# export GDS3D_NAME="gds3d"
 # COPY images/gds3d/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -145,9 +150,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile ghdl
 ######################################################################
 # FROM base as ghdl
-# ARG GHDL_REPO_URL="https://github.com/ghdl/ghdl.git"
-# ARG GHDL_REPO_COMMIT="95af05497c92a975d315cb227c242ffe07cb9716"
-# ARG GHDL_NAME="ghdl"
+# export GHDL_REPO_URL="https://github.com/ghdl/ghdl.git"
+# export GHDL_REPO_COMMIT="95af05497c92a975d315cb227c242ffe07cb9716"
+# export GHDL_NAME="ghdl"
 # COPY images/ghdl/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -155,9 +160,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile gtkwave
 ######################################################################
 # FROM base as gtkwave
-# ARG GTKWAVE_REPO_URL="https://github.com/gtkwave/gtkwave"
-# ARG GTKWAVE_REPO_COMMIT="51aa052db9440d634f588178759f20fec4cffdc2"
-# ARG GTKWAVE_NAME="gtkwave"
+# export GTKWAVE_REPO_URL="https://github.com/gtkwave/gtkwave"
+# export GTKWAVE_REPO_COMMIT="51aa052db9440d634f588178759f20fec4cffdc2"
+# export GTKWAVE_NAME="gtkwave"
 # COPY images/gtkwave/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -165,9 +170,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile irsim
 ######################################################################
 # FROM base as irsim
-# ARG IRSIM_REPO_URL="https://github.com/rtimothyedwards/irsim"
-# ARG IRSIM_REPO_COMMIT="a7884acc04cd94017779893d381b7e93d8895587"
-# ARG IRSIM_NAME="irsim"
+# export IRSIM_REPO_URL="https://github.com/rtimothyedwards/irsim"
+# export IRSIM_REPO_COMMIT="a7884acc04cd94017779893d381b7e93d8895587"
+# export IRSIM_NAME="irsim"
 # COPY images/irsim/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -175,9 +180,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile iverilog
 ######################################################################
 # FROM base as iverilog
-# ARG IVERILOG_REPO_URL="https://github.com/steveicarus/iverilog.git"
-# ARG IVERILOG_REPO_COMMIT="0db1a0cc67f571b87a8ed78440ac69733a7e2e41"
-# ARG IVERILOG_NAME="iverilog"
+# export IVERILOG_REPO_URL="https://github.com/steveicarus/iverilog.git"
+# export IVERILOG_REPO_COMMIT="0db1a0cc67f571b87a8ed78440ac69733a7e2e41"
+# export IVERILOG_NAME="iverilog"
 # COPY images/iverilog/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -185,9 +190,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile klayout (part of OpenLane)
 ######################################################################
 # FROM basepkg as klayout
-# ARG KLAYOUT_REPO_URL="https://github.com/KLayout/klayout"
-# ARG KLAYOUT_REPO_COMMIT="v0.28.15"
-# ARG KLAYOUT_NAME="klayout"
+# export KLAYOUT_REPO_URL="https://github.com/KLayout/klayout"
+# export KLAYOUT_REPO_COMMIT="v0.28.15"
+# export KLAYOUT_NAME="klayout"
 # COPY images/klayout/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -195,9 +200,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile netgen (part of OpenLane)
 ######################################################################
 # FROM base as netgen
-# ARG NETGEN_REPO_URL="https://github.com/rtimothyedwards/netgen"
-# ARG NETGEN_REPO_COMMIT="87d8759a6980d297edcb9be6f8661867e4726f9a"
-# ARG NETGEN_NAME="netgen"
+# export NETGEN_REPO_URL="https://github.com/rtimothyedwards/netgen"
+# export NETGEN_REPO_COMMIT="87d8759a6980d297edcb9be6f8661867e4726f9a"
+# export NETGEN_NAME="netgen"
 # COPY images/netgen/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -205,9 +210,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile ngspice
 ######################################################################
 # FROM open_pdks as ngspice
-# ARG NGSPICE_REPO_URL="https://github.com/danchitnis/ngspice-sf-mirror"
-# ARG NGSPICE_REPO_COMMIT="ngspice-42"
-# ARG NGSPICE_NAME="ngspice"
+# export NGSPICE_REPO_URL="https://github.com/danchitnis/ngspice-sf-mirror"
+# export NGSPICE_REPO_COMMIT="ngspice-42"
+# export NGSPICE_NAME="ngspice"
 # COPY images/ngspice/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -215,9 +220,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile ngspyce
 ######################################################################
 # FROM basepkg as ngspyce
-# ARG NGSPYCE_REPO_URL="https://github.com/ignamv/ngspyce"
-# ARG NGSPYCE_REPO_COMMIT="154a2724080e3bf15827549bba9f315cd11984fe"
-# ARG NGSPYCE_NAME="ngspyce"
+# export NGSPYCE_REPO_URL="https://github.com/ignamv/ngspyce"
+# export NGSPYCE_REPO_COMMIT="154a2724080e3bf15827549bba9f315cd11984fe"
+# export NGSPYCE_NAME="ngspyce"
 # COPY images/ngspyce/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -225,9 +230,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile nvc (VHDL simulator)
 ######################################################################
 # FROM base as nvc
-# ARG NVC_REPO_URL="https://github.com/nickg/nvc"
-# ARG NVC_REPO_COMMIT="r1.11.2"
-# ARG NVC_NAME="nvc"
+# export NVC_REPO_URL="https://github.com/nickg/nvc"
+# export NVC_REPO_COMMIT="r1.11.2"
+# export NVC_NAME="nvc"
 # COPY images/nvc/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -235,9 +240,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile openlane (part of OpenLane)
 ######################################################################
 # FROM basepkg as openlane
-# ARG OPENLANE_REPO_URL="https://github.com/The-OpenROAD-Project/OpenLane"
-# ARG OPENLANE_REPO_COMMIT="2024.01.12"
-# ARG OPENLANE_NAME="openlane"
+# export OPENLANE_REPO_URL="https://github.com/The-OpenROAD-Project/OpenLane"
+# export OPENLANE_REPO_COMMIT="2024.01.12"
+# export OPENLANE_NAME="openlane"
 # COPY images/openlane/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -245,9 +250,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile openroad (part of OpenLane)
 ######################################################################
 # FROM base as openroad_app
-# ARG OPENROAD_APP_REPO_URL="https://github.com/The-OpenROAD-Project/OpenROAD.git"
-# ARG OPENROAD_APP_REPO_COMMIT="75f2f325b7a42e56a92404f33af8e96530d9b202"
-# ARG OPENROAD_APP_NAME="openroad"
+# export OPENROAD_APP_REPO_URL="https://github.com/The-OpenROAD-Project/OpenROAD.git"
+# export OPENROAD_APP_REPO_COMMIT="75f2f325b7a42e56a92404f33af8e96530d9b202"
+# export OPENROAD_APP_NAME="openroad"
 # COPY images/openroad/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -255,9 +260,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile padring (part of OpenLane)
 ######################################################################
 # FROM base as padring
-# ARG PADRING_REPO_URL="https://github.com/donn/padring"
-# ARG PADRING_REPO_COMMIT="b2a64abcc8561d758c0bcb3945117dcb13bd9dca"
-# ARG PADRING_NAME="padring"
+# export PADRING_REPO_URL="https://github.com/donn/padring"
+# export PADRING_REPO_COMMIT="b2a64abcc8561d758c0bcb3945117dcb13bd9dca"
+# export PADRING_NAME="padring"
 # COPY images/padring/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -265,9 +270,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile pyopus
 ######################################################################
 # FROM basepkg as pyopus
-# ARG PYOPUS_REPO_URL="https://fides.fe.uni-lj.si/pyopus/download"
-# ARG PYOPUS_REPO_COMMIT="0.11"
-# ARG PYOPUS_NAME="pyopus"
+# export PYOPUS_REPO_URL="https://fides.fe.uni-lj.si/pyopus/download"
+# export PYOPUS_REPO_COMMIT="0.11"
+# export PYOPUS_NAME="pyopus"
 # COPY images/pyopus/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -275,9 +280,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile qflow helper files
 ######################################################################
 # FROM base as qflow
-# ARG QFLOW_REPO_URL="https://github.com/RTimothyEdwards/qflow.git"
-# ARG QFLOW_REPO_COMMIT="7314066deb9543436c76c817015f8554f09efdb0"
-# ARG QFLOW_NAME="qflow"
+# export QFLOW_REPO_URL="https://github.com/RTimothyEdwards/qflow.git"
+# export QFLOW_REPO_COMMIT="7314066deb9543436c76c817015f8554f09efdb0"
+# export QFLOW_NAME="qflow"
 # COPY images/qflow/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -285,9 +290,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile qucs-s
 ######################################################################
 # FROM base as qucs-s
-# ARG QUCS_S_REPO_URL="https://github.com/ra3xdh/qucs_s"
-# ARG QUCS_S_REPO_COMMIT="2.1.0"
-# ARG QUCS_S_NAME="qucs-s"
+# export QUCS_S_REPO_URL="https://github.com/ra3xdh/qucs_s"
+# export QUCS_S_REPO_COMMIT="2.1.0"
+# export QUCS_S_NAME="qucs-s"
 # COPY images/qucs-s/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -295,9 +300,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile riscv-gnu-toolchain-rv32i
 ######################################################################
 # FROM base as riscv-gnu-toolchain-rv32i
-# ARG RISCV_GNU_TOOLCHAIN_RV32I_REPO_URL="https://github.com/riscv-collab/riscv-gnu-toolchain.git"
-# ARG RISCV_GNU_TOOLCHAIN_RV32I_REPO_COMMIT="2023.12.20"
-# ARG RISCV_GNU_TOOLCHAIN_RV32I_NAME="riscv-gnu-toolchain-rv32i"
+# export RISCV_GNU_TOOLCHAIN_RV32I_REPO_URL="https://github.com/riscv-collab/riscv-gnu-toolchain.git"
+# export RISCV_GNU_TOOLCHAIN_RV32I_REPO_COMMIT="2023.12.20"
+# export RISCV_GNU_TOOLCHAIN_RV32I_NAME="riscv-gnu-toolchain-rv32i"
 # COPY images/riscv-gnu-toolchain-rv32i/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -305,9 +310,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile slang
 ######################################################################
 # FROM base as slang
-# ARG SLANG_REPO_URL="https://github.com/MikePopoloski/slang.git"
-# ARG SLANG_REPO_COMMIT="a060f15cdc6b04f5a84ba83cdeedacc8a9123b4b"
-# ARG SLANG_NAME="slang"
+# export SLANG_REPO_URL="https://github.com/MikePopoloski/slang.git"
+# export SLANG_REPO_COMMIT="a060f15cdc6b04f5a84ba83cdeedacc8a9123b4b"
+# export SLANG_NAME="slang"
 # COPY images/slang/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -315,9 +320,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile verilator (part of OpenLane)
 ######################################################################
 # FROM base as verilator
-# ARG VERILATOR_REPO_URL="https://github.com/verilator/verilator"
-# ARG VERILATOR_REPO_COMMIT="67dfa37c560385827218350ea936eb1baf604240"
-# ARG VERILATOR_NAME="verilator"
+# export VERILATOR_REPO_URL="https://github.com/verilator/verilator"
+# export VERILATOR_REPO_COMMIT="67dfa37c560385827218350ea936eb1baf604240"
+# export VERILATOR_NAME="verilator"
 # COPY images/verilator/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -325,9 +330,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile xschem
 ######################################################################
 # FROM base as xschem
-# ARG XSCHEM_REPO_URL="https://github.com/StefanSchippers/xschem.git"
-# ARG XSCHEM_REPO_COMMIT="a1c256950676b594bd751636b3b99dc12af63c21"
-# ARG XSCHEM_NAME="xschem"
+# export XSCHEM_REPO_URL="https://github.com/StefanSchippers/xschem.git"
+# export XSCHEM_REPO_COMMIT="a1c256950676b594bd751636b3b99dc12af63c21"
+# export XSCHEM_NAME="xschem"
 # COPY images/xschem/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -336,18 +341,18 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 ######################################################################
 # FIXME build trilinos as own image, clean with commit etc.
 # FROM base as xyce
-# ARG XYCE_REPO_URL="https://github.com/Xyce/Xyce.git"
-# ARG XYCE_REPO_COMMIT="Release-7.8.0"
-# ARG XYCE_NAME="xyce"
+# export XYCE_REPO_URL="https://github.com/Xyce/Xyce.git"
+# export XYCE_REPO_COMMIT="Release-7.8.0"
+# export XYCE_NAME="xyce"
 # COPY images/xyce/scripts/trilinos.reconfigure.sh /trilinos.reconfigure.sh
 # COPY images/xyce/scripts/xyce.reconfigure.sh /xyce.reconfigure.sh
 # COPY images/xyce/scripts/install.sh install.sh
 # RUN bash install.sh
 
 # FROM xyce as xyce-xdm
-# ARG XYCE_XDM_REPO_URL="https://github.com/Xyce/XDM"
-# ARG XYCE_XDM_REPO_COMMIT="Release-2.7.0"
-# ARG XYCE_XDM_NAME="xyce-xdm"
+# export XYCE_XDM_REPO_URL="https://github.com/Xyce/XDM"
+# export XYCE_XDM_REPO_COMMIT="Release-2.7.0"
+# export XYCE_XDM_NAME="xyce-xdm"
 # COPY images/xyce-xdm/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -355,16 +360,16 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile yosys (part of OpenLane) & yosys-ghdl-plugin
 ######################################################################
 # FROM base as yosys
-# ARG YOSYS_REPO_URL="https://github.com/YosysHQ/yosys"
-# ARG YOSYS_REPO_COMMIT="4a1b5599258881f579a2d95274754bcd8fc171bd"
-# ARG YOSYS_NAME="yosys"
+# export YOSYS_REPO_URL="https://github.com/YosysHQ/yosys"
+# export YOSYS_REPO_COMMIT="4a1b5599258881f579a2d95274754bcd8fc171bd"
+# export YOSYS_NAME="yosys"
 # COPY images/yosys/scripts/install.sh install.sh
 # RUN bash install.sh
 
 # FROM base as ghdl-yosys-plugin
-# ARG GHDL_YOSYS_PLUGIN_REPO_URL="https://github.com/ghdl/ghdl-yosys-plugin.git"
-# ARG GHDL_YOSYS_PLUGIN_REPO_COMMIT="0c4740a4f8f1e615cc587b3cd3849fa23a623862"
-# ARG GHDL_YOSYS_PLUGIN_NAME="ghdl-yosys-plugin"
+# export GHDL_YOSYS_PLUGIN_REPO_URL="https://github.com/ghdl/ghdl-yosys-plugin.git"
+# export GHDL_YOSYS_PLUGIN_REPO_COMMIT="0c4740a4f8f1e615cc587b3cd3849fa23a623862"
+# export GHDL_YOSYS_PLUGIN_NAME="ghdl-yosys-plugin"
 # COPY --from=yosys	${TOOLS}    ${TOOLS}
 # COPY --from=ghdl	${TOOLS}    ${TOOLS}
 # COPY images/ghdl-yosys-plugin/scripts/install.sh install.sh
@@ -374,9 +379,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile ALIGN-analoglayout
 ######################################################################
 # FROM basepkg as align
-# ARG ALIGN_REPO_URL="https://github.com/ALIGN-analoglayout/ALIGN-public.git"
-# ARG ALIGN_REPO_COMMIT="d3954af5ba4deab3c7daec4a0e5fd866d65ef75c"
-# ARG ALIGN_NAME="align"
+# export ALIGN_REPO_URL="https://github.com/ALIGN-analoglayout/ALIGN-public.git"
+# export ALIGN_REPO_COMMIT="d3954af5ba4deab3c7daec4a0e5fd866d65ef75c"
+# export ALIGN_NAME="align"
 # COPY images/align/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -385,9 +390,9 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 ######################################################################
 # FROM base as align-pdk-sky130
 # FIXME using a forked PDK since a few changes needed
-# ARG ALIGN_PDK_SKY130_REPO_URL="https://github.com/iic-jku/ALIGN-pdk-sky130.git"
-# ARG ALIGN_PDK_SKY130_REPO_COMMIT="856e568f809c54580e82e077e93aff98c509b451"
-# ARG ALIGN_PDK_SKY130_NAME="align-pdk-sky130"
+# export ALIGN_PDK_SKY130_REPO_URL="https://github.com/iic-jku/ALIGN-pdk-sky130.git"
+# export ALIGN_PDK_SKY130_REPO_COMMIT="856e568f809c54580e82e077e93aff98c509b451"
+# export ALIGN_PDK_SKY130_NAME="align-pdk-sky130"
 # COPY images/align-pdk-sky130/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -395,11 +400,11 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # Compile different components for the rftoolkit
 ######################################################################
 # FROM base as rftoolkit
-# ARG RFTK_NAME="rftoolkit"
-# ARG RFTK_FASTHENRY_REPO_URL="https://github.com/ediloren/FastHenry2"
-# ARG RFTK_FASTHENRY_REPO_COMMIT="363e43ed57ad3b9affa11cba5a86624fad0edaa9"
-# ARG RFTK_FASTERCAP_REPO_URL="https://github.com/ediloren/FasterCap.git"
-# ARG RFTK_FASTERCAP_REPO_COMMIT="b42179a8fdd25ab42fe45527282b4a738d7e7f87"
+# export RFTK_NAME="rftoolkit"
+# export RFTK_FASTHENRY_REPO_URL="https://github.com/ediloren/FastHenry2"
+# export RFTK_FASTHENRY_REPO_COMMIT="363e43ed57ad3b9affa11cba5a86624fad0edaa9"
+# export RFTK_FASTERCAP_REPO_URL="https://github.com/ediloren/FasterCap.git"
+# export RFTK_FASTERCAP_REPO_COMMIT="b42179a8fdd25ab42fe45527282b4a738d7e7f87"
 # COPY images/rftoolkit/scripts/install.sh install.sh
 # RUN bash install.sh
 
@@ -442,7 +447,7 @@ sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
 # COPY --from=irsim                        ${TOOLS}/              ${TOOLS}/
 # COPY --from=iverilog                     ${TOOLS}/              ${TOOLS}/
 # COPY --from=klayout                      ${TOOLS}/              ${TOOLS}/
-# COPY --from=magic                        ${TOOLS}/              ${TOOLS}/
+sudo cp -r magic/* ${TOOLS}/
 # COPY --from=netgen                       ${TOOLS}/              ${TOOLS}/
 # COPY --from=nvc                          ${TOOLS}/              ${TOOLS}/
 # COPY --from=ngspice                      ${TOOLS}/              ${TOOLS}/
