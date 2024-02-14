@@ -4,7 +4,8 @@
 # Setup base image
 #######################################################################
 
-sudo locale-gen en_US en_US.UTF-8
+sudo apt install locales
+sudo locale-gen en_US.UTF-8
 sudo dpkg-reconfigure locales
 
 
@@ -22,30 +23,30 @@ export EXAMPLES=/foss/examples
 
 ## Assuming scripts are executable and have shebang (`#!/bin/bash`) at the top
 # Execute scripts
-# sudo chmod +x ./images/base/scripts/00_base_install.sh
-# ./images/base/scripts/00_base_install.sh
+sudo chmod +x ./images/base/scripts/00_base_install.sh
+./images/base/scripts/00_base_install.sh
 
-# sudo chmod +x ./images/base/scripts/01_base_setup.sh
-# ./images/base/scripts/01_base_setup.sh
+sudo chmod +x ./images/base/scripts/01_base_setup.sh
+./images/base/scripts/01_base_setup.sh
 
-# sudo chmod +x  ./images/base/scripts/30_install_boost.sh
-# ./images/base/scripts/30_install_boost.sh
+sudo chmod +x  ./images/base/scripts/30_install_boost.sh
+./images/base/scripts/30_install_boost.sh
 
-# sudo chmod +x  ./images/base/scripts/31_install_or-tools.sh
-# ./images/base/scripts/31_install_or-tools.sh
+sudo chmod +x  ./images/base/scripts/31_install_or-tools.sh
+./images/base/scripts/31_install_or-tools.sh
 
-# sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
-# ./images/base/scripts/70_install_from_pip.sh
+sudo chmod +x ./images/base/scripts/70_install_from_pip.sh
+./images/base/scripts/70_install_from_pip.sh
 
 ######################################################################
-Add base packages (install via pip, npm, or gem)
+#Add base packages (install via pip, npm, or gem)
 ######################################################################
 # FROM base as basepkg
 # COPY images/base/scripts/install.sh install.sh
 # RUN bash install.sh
 
 ######################################################################
-Compile magic (part of OpenLane)
+# Compile magic (part of OpenLane)
 ######################################################################
 # FROM basepkg as magic
 # ARG MAGIC_REPO_URL="https://github.com/rtimothyedwards/magic"
@@ -55,7 +56,7 @@ Compile magic (part of OpenLane)
 # RUN bash install.sh
 
 ######################################################################
-Compile openvaf
+# Compile openvaf
 ######################################################################
 # FROM basepkg as openvaf
 # ARG OPENVAF_REPO_URL="https://github.com/iic-jku/OpenVAF.git"
@@ -66,7 +67,7 @@ Compile openvaf
 # RUN bash install.sh
 
 ######################################################################
-Compile osic-multitool
+# Compile osic-multitool
 ######################################################################
 # FROM openvaf as osic-multitool
 # ARG OSIC_MULTITOOL_REPO_URL="https://github.com/iic-jku/osic-multitool.git"
@@ -76,7 +77,7 @@ Compile osic-multitool
 # RUN bash install.sh
 
 ######################################################################
-Create open_pdks (part of OpenLane)
+# Create open_pdks (part of OpenLane)
 ######################################################################
 # FROM osic-multitool as open_pdks
 # ARG OPEN_PDKS_REPO_URL="https://github.com/RTimothyEdwards/open_pdks"
@@ -88,7 +89,7 @@ Create open_pdks (part of OpenLane)
 # RUN bash install_ihp.sh 
 
 ######################################################################
-Compile covered 
+# Compile covered 
 ######################################################################
 # FROM base as covered
 # ARG COVERED_REPO_URL="https://github.com/hpretl/verilog-covered"
@@ -98,7 +99,7 @@ Compile covered
 # RUN bash install.sh
 
 ######################################################################
-Compile cvc_rv
+# Compile cvc_rv
 ######################################################################
 # FROM base as cvc_rv
 # ARG CVC_RV_REPO_URL="https://github.com/d-m-bailey/cvc"
@@ -108,9 +109,9 @@ Compile cvc_rv
 # RUN bash install.sh
 
 ######################################################################
-Compile fault
+# Compile fault
 ######################################################################
-FIXME build dependencies clean as stand-alone stages
+# FIXME build dependencies clean as stand-alone stages
 # FROM base as fault
 # ARG FAULT_REPO_URL="https://github.com/Cloud-V/Fault"
 # ARG FAULT_REPO_COMMIT="90b1192f7823fb99f3094bf3848b9e2e26a5181f"
@@ -121,7 +122,7 @@ FIXME build dependencies clean as stand-alone stages
 # RUN bash install.sh
 
 ######################################################################
-Compile gaw3-xschem
+# Compile gaw3-xschem
 ######################################################################
 # FROM base as gaw3-xschem
 # ARG GAW3_XSCHEM_REPO_URL="https://github.com/StefanSchippers/xschem-gaw.git"
@@ -131,7 +132,7 @@ Compile gaw3-xschem
 # RUN bash install.sh
 
 ######################################################################
-Compile GDS3D
+# Compile GDS3D
 ######################################################################
 # FROM open_pdks as gds3d
 # ARG GDS3D_REPO_URL="https://github.com/trilomix/GDS3D.git"
@@ -141,7 +142,7 @@ Compile GDS3D
 # RUN bash install.sh
 
 ######################################################################
-Compile ghdl
+# Compile ghdl
 ######################################################################
 # FROM base as ghdl
 # ARG GHDL_REPO_URL="https://github.com/ghdl/ghdl.git"
@@ -151,7 +152,7 @@ Compile ghdl
 # RUN bash install.sh
 
 ######################################################################
-Compile gtkwave
+# Compile gtkwave
 ######################################################################
 # FROM base as gtkwave
 # ARG GTKWAVE_REPO_URL="https://github.com/gtkwave/gtkwave"
@@ -161,7 +162,7 @@ Compile gtkwave
 # RUN bash install.sh
 
 ######################################################################
-Compile irsim
+# Compile irsim
 ######################################################################
 # FROM base as irsim
 # ARG IRSIM_REPO_URL="https://github.com/rtimothyedwards/irsim"
@@ -171,7 +172,7 @@ Compile irsim
 # RUN bash install.sh
 
 ######################################################################
-Compile iverilog
+# Compile iverilog
 ######################################################################
 # FROM base as iverilog
 # ARG IVERILOG_REPO_URL="https://github.com/steveicarus/iverilog.git"
@@ -181,7 +182,7 @@ Compile iverilog
 # RUN bash install.sh
 
 ######################################################################
-Compile klayout (part of OpenLane)
+# Compile klayout (part of OpenLane)
 ######################################################################
 # FROM basepkg as klayout
 # ARG KLAYOUT_REPO_URL="https://github.com/KLayout/klayout"
@@ -191,7 +192,7 @@ Compile klayout (part of OpenLane)
 # RUN bash install.sh
 
 ######################################################################
-Compile netgen (part of OpenLane)
+# Compile netgen (part of OpenLane)
 ######################################################################
 # FROM base as netgen
 # ARG NETGEN_REPO_URL="https://github.com/rtimothyedwards/netgen"
@@ -201,7 +202,7 @@ Compile netgen (part of OpenLane)
 # RUN bash install.sh
 
 ######################################################################
-Compile ngspice
+# Compile ngspice
 ######################################################################
 # FROM open_pdks as ngspice
 # ARG NGSPICE_REPO_URL="https://github.com/danchitnis/ngspice-sf-mirror"
@@ -211,7 +212,7 @@ Compile ngspice
 # RUN bash install.sh
 
 ######################################################################
-Compile ngspyce
+# Compile ngspyce
 ######################################################################
 # FROM basepkg as ngspyce
 # ARG NGSPYCE_REPO_URL="https://github.com/ignamv/ngspyce"
@@ -221,7 +222,7 @@ Compile ngspyce
 # RUN bash install.sh
 
 ######################################################################
-Compile nvc (VHDL simulator)
+# Compile nvc (VHDL simulator)
 ######################################################################
 # FROM base as nvc
 # ARG NVC_REPO_URL="https://github.com/nickg/nvc"
@@ -231,7 +232,7 @@ Compile nvc (VHDL simulator)
 # RUN bash install.sh
 
 ######################################################################
-Compile openlane (part of OpenLane)
+# Compile openlane (part of OpenLane)
 ######################################################################
 # FROM basepkg as openlane
 # ARG OPENLANE_REPO_URL="https://github.com/The-OpenROAD-Project/OpenLane"
@@ -241,7 +242,7 @@ Compile openlane (part of OpenLane)
 # RUN bash install.sh
 
 ######################################################################
-Compile openroad (part of OpenLane)
+# Compile openroad (part of OpenLane)
 ######################################################################
 # FROM base as openroad_app
 # ARG OPENROAD_APP_REPO_URL="https://github.com/The-OpenROAD-Project/OpenROAD.git"
@@ -251,7 +252,7 @@ Compile openroad (part of OpenLane)
 # RUN bash install.sh
 
 ######################################################################
-Compile padring (part of OpenLane)
+# Compile padring (part of OpenLane)
 ######################################################################
 # FROM base as padring
 # ARG PADRING_REPO_URL="https://github.com/donn/padring"
@@ -261,7 +262,7 @@ Compile padring (part of OpenLane)
 # RUN bash install.sh
 
 ######################################################################
-Compile pyopus
+# Compile pyopus
 ######################################################################
 # FROM basepkg as pyopus
 # ARG PYOPUS_REPO_URL="https://fides.fe.uni-lj.si/pyopus/download"
@@ -271,7 +272,7 @@ Compile pyopus
 # RUN bash install.sh
 
 ######################################################################
-Compile qflow helper files
+# Compile qflow helper files
 ######################################################################
 # FROM base as qflow
 # ARG QFLOW_REPO_URL="https://github.com/RTimothyEdwards/qflow.git"
@@ -281,7 +282,7 @@ Compile qflow helper files
 # RUN bash install.sh
 
 ######################################################################
-Compile qucs-s
+# Compile qucs-s
 ######################################################################
 # FROM base as qucs-s
 # ARG QUCS_S_REPO_URL="https://github.com/ra3xdh/qucs_s"
@@ -291,7 +292,7 @@ Compile qucs-s
 # RUN bash install.sh
 
 ######################################################################
-Compile riscv-gnu-toolchain-rv32i
+# Compile riscv-gnu-toolchain-rv32i
 ######################################################################
 # FROM base as riscv-gnu-toolchain-rv32i
 # ARG RISCV_GNU_TOOLCHAIN_RV32I_REPO_URL="https://github.com/riscv-collab/riscv-gnu-toolchain.git"
@@ -301,7 +302,7 @@ Compile riscv-gnu-toolchain-rv32i
 # RUN bash install.sh
 
 ######################################################################
-Compile slang
+# Compile slang
 ######################################################################
 # FROM base as slang
 # ARG SLANG_REPO_URL="https://github.com/MikePopoloski/slang.git"
@@ -311,7 +312,7 @@ Compile slang
 # RUN bash install.sh
 
 ######################################################################
-Compile verilator (part of OpenLane)
+# Compile verilator (part of OpenLane)
 ######################################################################
 # FROM base as verilator
 # ARG VERILATOR_REPO_URL="https://github.com/verilator/verilator"
@@ -321,7 +322,7 @@ Compile verilator (part of OpenLane)
 # RUN bash install.sh
 
 ######################################################################
-Compile xschem
+# Compile xschem
 ######################################################################
 # FROM base as xschem
 # ARG XSCHEM_REPO_URL="https://github.com/StefanSchippers/xschem.git"
@@ -331,9 +332,9 @@ Compile xschem
 # RUN bash install.sh
 
 ######################################################################
-Compile xyce & xyce-xdm
+# Compile xyce & xyce-xdm
 ######################################################################
-FIXME build trilinos as own image, clean with commit etc.
+# FIXME build trilinos as own image, clean with commit etc.
 # FROM base as xyce
 # ARG XYCE_REPO_URL="https://github.com/Xyce/Xyce.git"
 # ARG XYCE_REPO_COMMIT="Release-7.8.0"
@@ -351,7 +352,7 @@ FIXME build trilinos as own image, clean with commit etc.
 # RUN bash install.sh
 
 ######################################################################
-Compile yosys (part of OpenLane) & yosys-ghdl-plugin
+# Compile yosys (part of OpenLane) & yosys-ghdl-plugin
 ######################################################################
 # FROM base as yosys
 # ARG YOSYS_REPO_URL="https://github.com/YosysHQ/yosys"
@@ -370,7 +371,7 @@ Compile yosys (part of OpenLane) & yosys-ghdl-plugin
 # RUN bash install.sh
 
 ######################################################################
-Compile ALIGN-analoglayout
+# Compile ALIGN-analoglayout
 ######################################################################
 # FROM basepkg as align
 # ARG ALIGN_REPO_URL="https://github.com/ALIGN-analoglayout/ALIGN-public.git"
@@ -380,10 +381,10 @@ Compile ALIGN-analoglayout
 # RUN bash install.sh
 
 ######################################################################
-Compile ALIGN-analoglayout-sky130
+# Compile ALIGN-analoglayout-sky130
 ######################################################################
 # FROM base as align-pdk-sky130
-FIXME using a forked PDK since a few changes needed
+# FIXME using a forked PDK since a few changes needed
 # ARG ALIGN_PDK_SKY130_REPO_URL="https://github.com/iic-jku/ALIGN-pdk-sky130.git"
 # ARG ALIGN_PDK_SKY130_REPO_COMMIT="856e568f809c54580e82e077e93aff98c509b451"
 # ARG ALIGN_PDK_SKY130_NAME="align-pdk-sky130"
@@ -391,7 +392,7 @@ FIXME using a forked PDK since a few changes needed
 # RUN bash install.sh
 
 ######################################################################
-Compile different components for the rftoolkit
+# Compile different components for the rftoolkit
 ######################################################################
 # FROM base as rftoolkit
 # ARG RFTK_NAME="rftoolkit"
@@ -403,19 +404,19 @@ Compile different components for the rftoolkit
 # RUN bash install.sh
 
 ######################################################################
-Final output container
+# Final output container
 ######################################################################
 # FROM basepkg as iic-osic-tools
 
-Connection ports for controlling the UI:
-VNC port:5901
-noVNC webport, connect via http://IP:80/?password=start
+# Connection ports for controlling the UI:
+# VNC port:5901
+# noVNC webport, connect via http://IP:80/?password=start
 # ENV VNC_PORT=5901 \
     # NO_VNC_PORT=80 \
     # JUPYTER_PORT=8888
 # EXPOSE $VNC_PORT $NO_VNC_PORT $JUPYTER_PORT
 
-Environment config
+# Environment config
 # ENV HOME=/headless \
     # TERM=xterm \
     # STARTUPDIR=/dockerstartup \
@@ -424,10 +425,10 @@ Environment config
     # VNC_RESOLUTION=1680x1050 \
     # VNC_PW=abc123 \
     # VNC_VIEW_ONLY=false
-FIXME workaround for OpenMPI throwing errors when run inside a container without Capability "SYS_PTRACE".
+# FIXME workaround for OpenMPI throwing errors when run inside a container without Capability "SYS_PTRACE".
 # ENV OMPI_MCA_btl_vader_single_copy_mechanism=none
 
-Copy all layers into the final container
+# Copy all layers into the final container
 # COPY --from=open_pdks                    ${PDK_ROOT}/           ${PDK_ROOT}/
 # COPY --from=covered                      ${TOOLS}/              ${TOOLS}/
 # COPY --from=cvc_rv                       ${TOOLS}/              ${TOOLS}/
@@ -466,25 +467,25 @@ Copy all layers into the final container
 # COPY --from=align                        ${TOOLS}/              ${TOOLS}/
 # COPY --from=align-pdk-sky130             ${TOOLS}/              ${TOOLS}/
 
-Add design scripts and examples
+# Add design scripts and examples
 # ADD images/align-utils ${TOOLS}/align-utils
 
-Copy skeleton and tool version file for OpenLane
+# Copy skeleton and tool version file for OpenLane
 # COPY images/iic-osic-tools/skel /
 # COPY tool_metadata.yml /
 
-Allow scripts to be executed by any user
+# Allow scripts to be executed by any user
 # RUN find $STARTUPDIR/scripts -name '*.sh' -exec chmod a+x {} +
 
-Install all APT and PIP packages, as well as noVNC from sources
+# Install all APT and PIP packages, as well as noVNC from sources
 # RUN $STARTUPDIR/scripts/install.sh
 
-Install examples
-RUN git clone --depth=1 https://github.com/iic-jku/SKY130_SAR-ADC1 ${EXAMPLES}/SKY130_SAR-ADC1 && \
-   git clone --depth=1 https://github.com/iic-jku/SKY130_PLL1.git ${EXAMPLES}/SKY130_PLL1 && \
-   git clone --depth=1 https://github.com/mabrains/Analog_blocks.git ${EXAMPLES}/SKY130_ANALOG-BLOCKS
+# Install examples
+# RUN git clone --depth=1 https://github.com/iic-jku/SKY130_SAR-ADC1 ${EXAMPLES}/SKY130_SAR-ADC1 && \
+   # git clone --depth=1 https://github.com/iic-jku/SKY130_PLL1.git ${EXAMPLES}/SKY130_PLL1 && \
+   # git clone --depth=1 https://github.com/mabrains/Analog_blocks.git ${EXAMPLES}/SKY130_ANALOG-BLOCKS
 
-Finalize setup/install
+# Finalize setup/install
 # RUN $STARTUPDIR/scripts/post_install.sh
 
 # WORKDIR ${DESIGNS}
