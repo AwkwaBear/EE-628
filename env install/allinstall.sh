@@ -447,7 +447,7 @@ sudo chmod +x images/magic/scripts/install.sh
 # COPY --from=irsim                        ${TOOLS}/              ${TOOLS}/
 # COPY --from=iverilog                     ${TOOLS}/              ${TOOLS}/
 # COPY --from=klayout                      ${TOOLS}/              ${TOOLS}/
-sudo cp -r magic/* ${TOOLS}/
+sudo mv magic/* ${TOOLS}/
 # COPY --from=netgen                       ${TOOLS}/              ${TOOLS}/
 # COPY --from=nvc                          ${TOOLS}/              ${TOOLS}/
 # COPY --from=ngspice                      ${TOOLS}/              ${TOOLS}/
