@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Update Ubuntu packages
+sudo apt update
+sudo apt upgrade
+
 # Check if Conda is installed by checking the CONDA_PREFIX environment variable
 if [ -z "$CONDA_PREFIX" ]; then
     echo "Conda is not installed. Installing Miniconda..."
