@@ -41,6 +41,9 @@ cd ngspice && ./compile_linux.sh
 # Install PyTorch with the cpu-only option
 conda install pytorch==1.13.1 torchvision==0.14.1 torchaudio==0.13.1 cpuonly -c pytorch
 
+conda create -n myenv python=3.10.13
+conda activate myenv
+
 # Check the version of Python and PyTorch
 echo "Python version:"
 python --version
