@@ -27,6 +27,7 @@ git clone https://github.com/IHP-GmbH/IHP-Open-PDK.git
 # install openvaf and compile models
 wget https://openva.fra1.cdn.digitaloceanspaces.com/openvaf_23_5_0_linux_amd64.tar.gz
 tar -xf openvaf_23_5_0_linux_amd64.tar.gz
+chmod +x ./openvaf
 ./openvaf ./IHP-Open-PDK/ihp-sg13g2/libs.tech/ngspice/openvaf/psp103_nqs.va
 cp ./IHP-Open-PDK/ihp-sg13g2/libs.tech/ngspice/openvaf/psp103_nqs.osdi .
 
